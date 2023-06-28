@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
 	char* outputFile = NULL;
 	char* dictionaryFile = NULL;
 
+	// Handle getopt options 
     while ((opt = getopt_long(argc, argv, "hz:t:o:ld:p:ei", long_options, NULL)) != -1) {
 
 		switch (opt) {
