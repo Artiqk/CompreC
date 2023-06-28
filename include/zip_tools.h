@@ -24,6 +24,12 @@ FileInfo* getZipFilesInfoList(zip_t *archive);
 
 void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
 
+int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* destinationPath);
+
+int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath);
+
+int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* destinationPath, const char* password);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
