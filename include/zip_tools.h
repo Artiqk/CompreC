@@ -24,6 +24,24 @@ FileInfo* getZipFilesInfoList(zip_t *archive);
 
 void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
 
+int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath, const char* destinationPath);
+
+int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath);
+
+int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* destinationPath, const char* password);
+
+int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
+int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip);
+
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
 void printProgressBar(int current, int total);
+
+int tryPasswordOnZipFile(zip_t* archive, const char* filePath, const char* password);
+
+int getTotalPasswordsInFile(FILE* file);
+
+char* bruteforceZipWithDictionary(zip_t* archive, const char* zipFile, const char* dictionaryPath);
 
 #endif // ZIP_TOOLS_H

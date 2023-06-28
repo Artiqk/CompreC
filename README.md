@@ -16,6 +16,11 @@ sudo apt install -y libzip-dev
 sudo apt install -y gcc make
 ```
 
+## Creating the necessary directories
+```sh
+mkdir obj bin
+```
+
 ## Compile the project
 ```
 make
