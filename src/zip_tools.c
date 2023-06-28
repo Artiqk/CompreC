@@ -122,6 +122,17 @@ int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip
 }
 
 
+int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip) {
+    int error = addFileToZip(archive, fileName, filePathInZip, NULL);
+
+    if (error) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
 void printProgressBar(int current, int total) {
     const int barWidth = 70;
 
