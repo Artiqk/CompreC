@@ -10,6 +10,20 @@
 #include <getopt.h>
 #include <zip.h>
 
+typedef struct {
+	char* fileName;
+	size_t length;
+	int size;
+} FileInfo;
+
+int isZipFileEncrypted(zip_t* archive, const char* fileName);
+
+int getFileSize(zip_t* archive, zip_uint64_t index);
+
+FileInfo* getZipFilesInfoList(zip_t *archive);
+
+void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
