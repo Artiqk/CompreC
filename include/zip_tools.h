@@ -38,4 +38,10 @@ int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* f
 
 void printProgressBar(int current, int total);
 
+int tryPasswordOnZipFile(zip_t* archive, const char* filePath, const char* password);
+
+int getTotalPasswordsInFile(FILE* file);
+
+char* bruteforceZipWithDictionary(zip_t* archive, const char* zipFile, const char* dictionaryPath);
+
 #endif // ZIP_TOOLS_H

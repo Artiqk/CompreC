@@ -228,3 +228,89 @@ void printProgressBar(int current, int total) {
     printf("] %d%%", (int)((float)current * 100.0 / total));
     fflush(stdout);  // Force the line to print
 }
+
+
+int tryPasswordOnZipFile(zip_t* archive, const char* filePath, const char* password) { // FIXME - Rewrite this function to handle the password verification with the checksum
+    zip_file_t* zipFile = zip_fopen_encrypted(archive, filePath, (zip_flags_t)0, password);
+
+    if (zipFile == NULL) {
+        return 1;
+    }
+
+    char buffer[100];
+    memset(buffer, 0, sizeof(buffer));
+
+    zip_int64_t readBytes = zip_fread(zipFile, &buffer, sizeof(buffer) - 1);
+
+    if (readBytes < 0) {
+        int archive_errno = zip_error_code_zip(zip_get_error(archive));
+
+        if (archive_errno == ZIP_ER_WRONGPASSWD) {
+            zip_fclose(zipFile);
+            return 1;
+        }
+    }
+
+    for(int i = 0; i < readBytes; i++) {
+        // If character is not a printable ASCII or a whitespace character
+        if (!isprint((unsigned char)buffer[i]) && !isspace((unsigned char)buffer[i])) {
+            zip_fclose(zipFile);
+            return 1; // Likely the wrong password
+        }
+    }
+    
+    zip_fclose(zipFile);
+    return 0;
+}
+
+
+int getTotalPasswordsInFile(FILE* file) {
+	int totalPasswords = 0;
+	char ch;
+
+	while (!feof(file)) {
+		ch = fgetc(file);
+		if (ch == '\n') {
+			totalPasswords++;
+		}
+	}
+
+	rewind(file);
+
+	return totalPasswords;
+}
+
+
+char* bruteforceZipWithDictionary(zip_t* archive, const char* filePath, const char* dictionaryPath) {
+	FILE* file = fopen(dictionaryPath, "r");
+
+	if (file == NULL) {
+		printf("Failed to open file %s (%s)", dictionaryPath, __func__);
+		exit(1);
+	}
+
+	int totalPasswords = getTotalPasswordsInFile(file);
+
+	char* password = NULL;
+	size_t len = 0;
+	int attemptedPasswords = 0;
+
+	while (getline(&password, &len, file) != -1) {
+		password[strcspn(password, "\n")] = 0; // Remove newline character
+
+		if (tryPasswordOnZipFile(archive, filePath, password) == 0) {
+			printProgressBar(attemptedPasswords, totalPasswords);
+			fclose(file);
+			return password;
+		}
+
+		attemptedPasswords++;
+		printProgressBar(attemptedPasswords, totalPasswords);
+	}
+
+	free(password);
+	
+	fclose(file);
+
+	return NULL;
+}
