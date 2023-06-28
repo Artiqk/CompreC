@@ -44,6 +44,19 @@ int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath
 }
 
 
+int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath) {
+
+    zip_file_t* zipFile = zip_fopen(archive, filePath, 0);
+
+    if (zipFile == NULL) {
+        fprintf(stderr, "[-] Failed to open file %s (%s)\n", filePath, __func__);
+        return 1;
+    }
+
+    return extractFileFromZip(archive, zipFile, filePath, destinationPath);
+}
+
+
 void printProgressBar(int current, int total) {
     const int barWidth = 70;
 
