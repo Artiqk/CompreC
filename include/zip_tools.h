@@ -14,6 +14,8 @@ int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* de
 
 int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath);
 
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H

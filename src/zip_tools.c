@@ -57,6 +57,19 @@ int openZipFile(zip_t* archive, const char* filePath, const char* destinationPat
 }
 
 
+int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* destinationPath, const char* password) {
+
+    zip_file_t* zipFile = zip_fopen_encrypted(archive, filePath, 0, password);
+
+    if (zipFile == NULL) {
+        fprintf(stderr, "[-] Failed to open encrypted file %s (%s)\n", filePath, __func__);
+        return 1;
+    }
+
+    return extractFileFromZip(archive, zipFile, filePath, destinationPath);
+}
+
+
 void printProgressBar(int current, int total) {
     const int barWidth = 70;
 
