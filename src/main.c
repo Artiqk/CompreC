@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     while ((opt = getopt_long(argc, argv, "hz:t:o:ld:p:ei", long_options, NULL)) != -1) {
 
-		switch (optss) {
+		switch (opt) {
 			case 'h':
 				printHelp();
 				exit(EXIT_SUCCESS);
