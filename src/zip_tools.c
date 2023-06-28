@@ -158,6 +158,63 @@ int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* desti
 }
 
 
+int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password) {
+
+    // Validate inputs
+    if (!archive || !fileName || !filePathInZip) {
+        fprintf(stderr, "[-] Invalid arguments\n");
+        return -1;
+    }
+
+    // Create zip source from file
+    zip_source_t* zipSource = zip_source_file(archive, fileName, 0, -1);
+
+    if (!zipSource) {
+        fprintf(stderr, "[-] Failed to create zip source from file %s (%s)\n", fileName, __func__);
+        return -1;
+    }
+
+    // Add file to zip archive
+    zip_int64_t fileIndex = zip_file_add(archive, filePathInZip, zipSource, ZIP_FL_OVERWRITE);
+
+    if (fileIndex < 0) {
+        fprintf(stderr, "[-] Failed to add file %s to zip archive (%s)\n", fileName, __func__);
+        zip_source_free(zipSource);
+        return -1;
+    }
+
+    if (password && zip_file_set_encryption(archive, fileIndex, ZIP_EM_AES_256, password) < 0) {
+        fprintf(stderr, "[-] Failed to set password for file %s (%s)\n", fileName, __func__);
+        zip_source_free(zipSource);
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip) {
+    int error = addFileToZip(archive, fileName, filePathInZip, NULL);
+
+    if (error) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password) {
+    int error = addFileToZip(archive, fileName, filePathInZip, password);
+
+    if (error) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
 void printProgressBar(int current, int total) {
     const int barWidth = 70;
 

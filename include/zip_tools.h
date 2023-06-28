@@ -30,6 +30,12 @@ int openZipFile(zip_t* archive, const char* filePath, const char* destinationPat
 
 int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* destinationPath, const char* password);
 
+int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
+int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip);
+
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
