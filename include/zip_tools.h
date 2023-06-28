@@ -24,6 +24,8 @@ FileInfo* getZipFilesInfoList(zip_t *archive);
 
 void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
 
+int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
