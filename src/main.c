@@ -168,6 +168,7 @@ void bruteforcePassword(zip_t* archive, const char* dictionaryFile, const char* 
 
 	char* password = bruteforceZipWithDictionary(archive, fileToBruteforce, dictionaryFile);
 
+	// Test if password was found
 	if (password != NULL) {
 		printf("\n[+] PASSWORD FOUND : %s\n", password);
 	} else {
