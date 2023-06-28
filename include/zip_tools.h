@@ -12,4 +12,6 @@
 
 int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* destinationPath);
 
+void printProgressBar(int current, int total);
+
 #endif // ZIP_TOOLS_H
