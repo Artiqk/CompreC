@@ -133,6 +133,17 @@ int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathIn
 }
 
 
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password) {
+    int error = addFileToZip(archive, fileName, filePathInZip, password);
+
+    if (error) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
 void printProgressBar(int current, int total) {
     const int barWidth = 70;
 

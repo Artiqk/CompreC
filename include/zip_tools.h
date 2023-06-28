@@ -28,6 +28,8 @@ int addFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip
 
 int insertFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip);
 
+int insertEncryptedFileToZip(zip_t* archive, const char* fileName, const char* filePathInZip, const char* password);
+
 void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
