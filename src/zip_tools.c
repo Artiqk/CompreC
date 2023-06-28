@@ -88,6 +88,47 @@ void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList) {
 }
 
 
+void displayFileList(zip_t* archive, FileInfo* fileInfoList) {
+
+	zip_int64_t totalFiles = zip_get_num_entries(archive, 0);
+
+	int numberOfFiles = 0, totalSize = 0;
+
+	printf("     Size       Encrypted  Name\n");
+	printf("--------------  ---------  -----------\n");
+
+	for (int fileIndex = 0; fileIndex < totalFiles; fileIndex++) {
+		char* fileName = fileInfoList[fileIndex].fileName;
+
+		size_t fileNameLength = fileInfoList[fileIndex].length;
+
+		int fileSize = fileInfoList[fileIndex].size;
+
+		totalSize += fileSize;
+
+		char lastCharacter = fileName[fileNameLength - 1];
+
+		int isDirectory = (lastCharacter == '/');
+
+		if (isDirectory) {
+			printf("%14d  %9s  %s (directory)\n", fileIndex, "-", fileName);
+			continue;
+		}
+
+		numberOfFiles++;
+
+		char* encrypted = isZipFileEncrypted(archive, fileName) ? "yes" : "no";
+
+		printf("%14d  %9s  %s\n", fileSize, encrypted, fileName);
+
+	}
+
+	printf("--------------             -----------\n");
+	printf("%14d             %4d files\n", totalSize, numberOfFiles);
+
+}
+
+
 int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath, const char* destinationPath) {
     // Get information about the file
     zip_stat_t sb;

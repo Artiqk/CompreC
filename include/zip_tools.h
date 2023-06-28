@@ -26,6 +26,8 @@ void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
 
 int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath, const char* destinationPath);
 
+void displayFileList(zip_t* archive, FileInfo* fileInfoList);
+
 int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath);
 
 int openZipFileEncrypted(zip_t* archive, const char* filePath, const char* destinationPath, const char* password);
