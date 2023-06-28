@@ -24,7 +24,7 @@ FileInfo* getZipFilesInfoList(zip_t *archive);
 
 void freeFileInfoList(zip_t* archive, FileInfo* fileInfoList);
 
-int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* destinationPath);
+int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath, const char* destinationPath);
 
 int openZipFile(zip_t* archive, const char* filePath, const char* destinationPath);
 
