@@ -1,30 +1,46 @@
 #include "zip_tools.h"
 
-int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* destinationPath) {
-	
-	FILE* file = fopen(destinationPath, "wb");
+int extractFileFromZip(zip_t* archive, zip_file_t* zipFile, const char* filePath, const char* destinationPath) {
+    // Get information about the file
+    zip_stat_t sb;
 
-	if (file == NULL) {
-		fprintf(stderr, "[-] Failed to open file %s (%s)\n", destinationPath, __func__);
-		zip_fclose(zipFile);
-		return -1;
-	}
+    if (zip_stat(archive, filePath, 0, &sb) != 0) {
+        fprintf(stderr, "[-] Failed to get information about file %s (%s)\n", filePath, __func__);
+        zip_fclose(zipFile);
+        return -1;
+    }
 
-	int bufferSize = 4096;
-	char* buffer = malloc(bufferSize);
-	int bytesRead;
+    // Total size of the file
+    zip_uint64_t totalSize = sb.size;
 
-	while ((bytesRead = zip_fread(zipFile, buffer, bufferSize)) > 0) {
-		fwrite(buffer, bytesRead, 1, file);
-	}
+    // Open file to write extracted data
+    FILE* file = fopen(destinationPath, "wb");
 
-	printf("[+] Extracted file %s\n", filePath);
+    if (file == NULL) {
+        fprintf(stderr, "[-] Failed to open file %s (%s)\n", destinationPath, __func__);
+        zip_fclose(zipFile);
+        return -1;
+    }
 
-	free(buffer);
-	fclose(file);
-	zip_fclose(zipFile);
+    int bufferSize = 4096, bytesRead, totalBytesRead = 0;
+    char* buffer = malloc(bufferSize);
 
-	return 0;
+    // Read data from zip file and write it to the file
+    while ((bytesRead = zip_fread(zipFile, buffer, bufferSize)) > 0) {
+        fwrite(buffer, bytesRead, 1, file);
+        totalBytesRead += bytesRead;
+        printProgressBar(totalBytesRead, totalSize);
+    }
+
+    printf("\n");
+
+    free(buffer);
+
+    fclose(file);
+    
+    zip_fclose(zipFile);
+
+    return 0;
 }
 
 
