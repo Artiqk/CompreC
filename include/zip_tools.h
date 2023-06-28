@@ -10,5 +10,6 @@
 #include <getopt.h>
 #include <zip.h>
 
+void printProgressBar(int current, int total);
 
 #endif // ZIP_TOOLS_H
