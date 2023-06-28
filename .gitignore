@@ -1,0 +1,8 @@
+obj/
+zip/
+wordlists/
+.vscode/
+
+*.o
+main
+SyllabusDuProjet.pdf
