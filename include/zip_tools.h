@@ -10,5 +10,6 @@
 #include <getopt.h>
 #include <zip.h>
 
+int extractFileFromZip(zip_file_t* zipFile, const char* filePath, const char* destinationPath);
 
 #endif // ZIP_TOOLS_H
