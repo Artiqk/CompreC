@@ -27,13 +27,13 @@ int isZipFileEncrypted(zip_t* archive, const char* fileName) {
 
 int getFileSize(zip_t* archive, zip_uint64_t index) {
 	struct zip_stat st;
-	
+	// Get file information for the specified index
 	if (zip_stat_index(archive, index, 0, &st) != 0) {
 		fprintf(stderr, "[-] Failed to get file info for entry %ld (%s)\n", index, __func__);
-		return 0;
+		return 0; // Return 0 to indicate failure
 	}
 
-	return st.size;
+	return st.size; // Return the size of the file
 }
 
 
