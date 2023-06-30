@@ -271,6 +271,7 @@ void printProgressBar(int current, int total) {
 }
 
 
+// FIXME - Calculate checksum of each file before inserting them to avoid collisions
 int tryPasswordOnZipFile(zip_t* archive, const char* filePath, const char* password) { // FIXME - Rewrite this function to handle the password verification with the checksum
     zip_file_t* zipFile = zip_fopen_encrypted(archive, filePath, (zip_flags_t)0, password);
 

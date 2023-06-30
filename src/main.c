@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 
 void printHelp() {
     printf("Usage: ./zip [OPTIONS]...\n");
-    printf("Manipulate a zip file, such as extracting a file, or including a file.\n");
+    printf("Manipulate a zip file, such as extracting a file, or including a file (you can also bruteforce the password).\n");
     printf("\nOptions:\n");
     printf("  -h, --help                        Show this help message and exit\n");
     printf("  -z, --zip ZIPFILE                 Specify the path of the zip file to operate on\n");
